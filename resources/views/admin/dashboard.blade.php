@@ -3,34 +3,86 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-    <h5 class="mb-1">Selamat datang, {{ auth()->user()->nama }}</h5>
-    <p class="text-muted mb-4">Ringkasan data sistem pengaduan.</p>
+    <div class="mb-4">
+        <h5 class="mb-1">Selamat datang, {{ auth()->user()->nama }}</h5>
+        <p class="text-muted mb-0">Ringkasan data sistem pengaduan.</p>
+    </div>
 
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm border-start border-4 border-primary">
+    {{-- Kartu Statistik --}}
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <p class="text-muted small mb-1"><i class="bi bi-people me-1"></i>Total User</p>
-                    <h4 class="fw-bold mb-0">{{ $totalUser }}</h4>
-</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm border-start border-4 border-info">
-                <div class="card-body">
-                    <p class="text-muted small mb-1"><i class="bi bi-person me-1"></i>Customer</p>
-                    <h4 class="fw-bold mb-0">{{ $totalCustomer }}</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-people-fill fs-2 text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Total User</h6>
+                            <h3 class="mb-0 fw-bold">{{ $totalUser }}</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm border-start border-4 border-success">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <p class="text-muted small mb-1"><i class="bi bi-clipboard-data me-1"></i>Pengaduan</p>
-                    <h4 class="fw-bold mb-0">{{ $totalPengaduan }}</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-person-check-fill fs-2 text-success"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Customer</h6>
+                            <h3 class="mb-0 fw-bold">{{ $totalCustomer }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-megaphone-fill fs-2 text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Pengaduan</h6>
+                            <h3 class="mb-0 fw-bold">{{ $totalPengaduan }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Tombol Akses Cepat --}}
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white">
+            <h6 class="mb-0">Akses Cepat</h6>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="{{ route('users.index') }}" class="btn btn-outline-primary w-100 py-3">
+                        <i class="bi bi-people d-block fs-3 mb-2"></i>
+                        <span class="fw-semibold">Kelola User</span>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ route('kategori.index') }}" class="btn btn-outline-info w-100 py-3">
+                        <i class="bi bi-tags d-block fs-3 mb-2"></i>
+                        <span class="fw-semibold">Kelola Kategori</span>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ route('kelola.pengaduan') }}" class="btn btn-outline-success w-100 py-3">
+                        <i class="bi bi-clipboard-data d-block fs-3 mb-2"></i>
+                        <span class="fw-semibold">Kelola Pengaduan</span>
+                    </a>
                 </div>
             </div>
         </div>

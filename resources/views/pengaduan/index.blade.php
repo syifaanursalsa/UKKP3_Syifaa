@@ -29,9 +29,6 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->created_at->format('d M Y') }}</td>
-
-
-    
                                 <td>{{ Str::limit($p->pengaduan, 60) }}</td>
                                 <td>
                                     @if ($p->foto)

@@ -26,11 +26,25 @@
 
             <p>{{ $pengaduan->pengaduan }}</p>
 
-            {{-- Tampilkan foto bukti jika ada --}}
-            @if ($pengaduan->foto)
-                <img src="{{ asset('storage/' . $pengaduan->foto) }}"
-                     class="img-fluid rounded" style="max-height: 300px;" alt="Foto bukti">
-            @endif
+           {{-- Tampilkan foto bukti jika ada --}}
+@if ($pengaduan->foto)
+    <div class="mb-3">
+        <label class="form-label fw-bold">Foto Bukti:</label>
+        <br>
+        <img src="{{ asset('storage/' . $pengaduan->foto) }}"
+             class="img-fluid rounded" 
+             style="max-height: 300px; border: 2px solid #ddd;" 
+             alt="Foto bukti"
+             onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EGagal memuat foto%3C/text%3E%3C/svg%3E';">
+        <br>
+        <small class="text-muted">
+            Path: {{ $pengaduan->foto }}<br>
+            URL: {{ asset('storage/' . $pengaduan->foto) }}
+        </small>
+    </div>
+@else
+    <p class="text-muted">Tidak ada foto bukti.</p>
+@endif
         </div>
     </div>
 @endsection
