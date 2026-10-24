@@ -16,33 +16,13 @@ class DashboardController extends Controller
     {
         $totalUser      = User::count();
         $totalCustomer  = User::where('role', 'customer')->count();
-        $totalPetugas   = User::where('role', 'petugas')->count();
         $totalPengaduan = Pengaduan::count();
 
         return view('admin.dashboard', compact(
-            'totalUser', 'totalCustomer', 'totalPetugas', 'totalPengaduan'
+            'totalUser', 'totalCustomer', 'totalPengaduan'
         ));
     }
 
-    /**
-     * Dashboard petugas.
-     * Menampilkan ringkasan pengaduan yang harus ditangani
-     * beserta 5 pengaduan terbaru.
-     */
-    public function petugas()
-    {
-        $totalPengaduan  = Pengaduan::count();
-
-        // Pengaduan yang belum selesai = masih perlu ditangani
-        $perluDitangani  = Pengaduan::where('status', '!=', 'selesai')->count();
-
-        // 5 pengaduan terbaru lengkap dengan data user pemiliknya
-        $pengaduanTerbaru = Pengaduan::with('user')->latest()->take(5)->get();
-
-        return view('petugas.dashboard', compact(
-            'totalPengaduan', 'perluDitangani', 'pengaduanTerbaru'
-        ));
-    }
 
     /**
      * Dashboard customer.

@@ -11,7 +11,7 @@ class CheckRole
     /**
      * Membatasi akses halaman berdasarkan role user.
      * Cara pakai di route: middleware('role:admin')
-     * atau beberapa role: middleware('role:admin,petugas')
+     * atau beberapa role: middleware('role:admin')
      */
     public function handle(Request $request, Closure $next, ...$roles)
 {

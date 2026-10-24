@@ -47,7 +47,6 @@
                     <label class="form-label">Role</label>
                     <select name="role" class="form-select" required>
                         <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="petugas" {{ $user->role == 'petugas' ? 'selected' : '' }}>Petugas</option>
                         <option value="customer" {{ $user->role == 'customer' ? 'selected' : '' }}>Customer</option>
                     </select>
                 </div>

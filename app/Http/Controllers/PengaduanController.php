@@ -3,94 +3,67 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
-use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PengaduanController extends Controller
 {
-    // ========== KHUSUS CUSTOMER ==========
+    // ==========================================
+    // KHUSUS CUSTOMER
+    // ==========================================
 
-    public function index()
-    {
-        $pengaduan = auth()->user()->pengaduan()->with('kategori')->latest()->get();
-        return view('pengaduan.index', compact('pengaduan'));
-    }
-
+    // 1. TAMPILKAN FORM BUAT PENGADUAN
     public function create()
     {
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
-        return view('pengaduan.create', compact('kategoris'));
+        // Langsung return view, tidak perlu query database kategori lagi
+        return view('pengaduan.create');
     }
 
+    // 2. SIMPAN PENGADUAN BARU
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_id' => 'required|exists:kategori,id',
+            'kategori'  => 'required|string',
             'pengaduan' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $foto = null;
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto')->store('foto', 'public');
+            $foto = $request->file('foto')->store('pengaduan', 'public');
         }
 
         auth()->user()->pengaduan()->create([
-            'kategori_id' => $request->kategori_id,
+            'kategori'  => $request->kategori,
             'pengaduan' => $request->pengaduan,
-            'foto' => $foto,
-            'status' => 'menunggu',
+            'foto'      => $foto,
+            'status'    => 'menunggu',
         ]);
 
-        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dikirim.');
+        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dikirim!');
     }
 
-    public function edit($id)
+    // 3. LIHAT DAFTAR PENGADUAN MILIK SENDIRI
+    public function index()
     {
-        $pengaduan = Pengaduan::findOrFail($id);
-
-        if ($pengaduan->user_id != auth()->user()->id || $pengaduan->status != 'menunggu') {
-            abort(403);
-        }
-
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
-        return view('pengaduan.edit', compact('pengaduan', 'kategoris'));
+        $pengaduan = auth()->user()->pengaduan()->latest()->get();
+        
+        // Pastikan nama file view kamu adalah 'pengaduan.index' atau 'pengaduan.saya'
+        return view('pengaduan.index', compact('pengaduan')); 
     }
 
-    public function update(Request $request, $id)
+    // ==========================================
+    // KHUSUS ADMIN (KELOLA)
+    // ==========================================
+
+    // 4. LIHAT SEMUA PENGADUAN
+    public function kelola()
     {
-        $pengaduan = Pengaduan::findOrFail($id);
-
-        if ($pengaduan->user_id != auth()->user()->id || $pengaduan->status != 'menunggu') {
-            abort(403);
-        }
-
-        $request->validate([
-            'kategori_id' => 'required|exists:kategori,id',
-            'pengaduan' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $pengaduan->kategori_id = $request->kategori_id;
-        $pengaduan->pengaduan = $request->pengaduan;
-
-        if ($request->hasFile('foto')) {
-            $pengaduan->foto = $request->file('foto')->store('foto', 'public');
-        }
-
-        $pengaduan->save();
-
-        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil diperbarui.');
+        $pengaduan = Pengaduan::latest()->get();
+       return view('pengaduan.kelola', compact('pengaduan'));
     }
 
-    // ========== KHUSUS ADMIN & PETUGAS (KELOLA) ==========
-
-   public function kelolaIndex()
-{
-    $pengaduan = Pengaduan::with(['user', 'kategori'])->latest()->get();
-    return view('pengaduan.kelola', compact('pengaduan')); // Pastikan ini cocok dengan nama file view kamu!
-}
-
+    // 5. UBAH STATUS
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -98,9 +71,22 @@ class PengaduanController extends Controller
         ]);
 
         $pengaduan = Pengaduan::findOrFail($id);
-        $pengaduan->status = $request->status;
-        $pengaduan->save();
+        $pengaduan->update(['status' => $request->status]);
 
-        return redirect()->route('kelola.pengaduan')->with('success', 'Status pengaduan berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+    }
+
+    // 6. HAPUS PENGADUAN
+    public function destroy($id)
+    {
+        $pengaduan = Pengaduan::findOrFail($id);
+        
+        if ($pengaduan->foto) {
+            Storage::disk('public')->delete($pengaduan->foto);
+        }
+        
+        $pengaduan->delete();
+
+        return redirect()->back()->with('success', 'Pengaduan berhasil dihapus.');
     }
 }

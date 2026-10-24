@@ -35,7 +35,6 @@
                                 @php
                                     $badge = [
                                         'admin' => 'text-bg-danger',
-                                        'petugas' => 'text-bg-warning',
                                         'customer' => 'text-bg-info',
                                     ][$user->role] ?? 'text-bg-secondary';
                                 @endphp

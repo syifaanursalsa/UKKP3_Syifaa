@@ -45,18 +45,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
     });
 
-    // Area khusus PETUGAS
-    Route::middleware('role:petugas')->prefix('petugas')->name('petugas.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'petugas'])->name('dashboard');
-    });
 
     // Area khusus CUSTOMER
     Route::middleware('role:customer')->prefix('customer')->name('customer.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'customer'])->name('dashboard');
     });
 
-    // ===== MENU USER (admin & petugas) =====
-    Route::middleware('role:admin,petugas')->prefix('users')->name('users.')->group(function () {
+    // ===== MENU USER (admin ) =====
+    Route::middleware('role:admin')->prefix('users')->name('users.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');
@@ -82,10 +78,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/{pengaduan}', [PengaduanController::class, 'show'])->name('show');
     });
 
-    // ===== ADMIN & PETUGAS: kelola semua pengaduan =====
-    Route::middleware('role:admin,petugas')->prefix('kelola-pengaduan')->name('kelola.')->group(function () {
-        Route::get('/', [PengaduanController::class, 'kelolaIndex'])->name('pengaduan'); 
+         // ===== ADMIN : kelola semua pengaduan =====
+    Route::middleware('role:admin')->prefix('kelola-pengaduan')->name('kelola.')->group(function () {
+        Route::get('/', [PengaduanController::class, 'kelola'])->name('pengaduan'); // <--- BENAR (sesuai controller)
         Route::put('/{pengaduan}/status', [PengaduanController::class, 'updateStatus'])->name('status');
+        Route::delete('/{pengaduan}', [PengaduanController::class, 'destroy'])->name('destroy'); // Jangan lupa tambahkan route destroy jika belum ada
     });
-
 }); // Penutup Route::middleware('auth')

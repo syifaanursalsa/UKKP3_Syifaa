@@ -42,13 +42,10 @@
                 <i class="bi bi-speedometer2 me-2"></i>Dashboard
             </a>
 
-            @if (in_array($role, ['admin', 'petugas']))
+            @if (in_array($role, ['admin', ]))
                 <a class="menu" href="{{ route('users.index') }}">
                     <i class="bi bi-people me-2"></i>User
                 </a>
-                 <a class="menu" href="{{ route('kategori.index') }}">
-                  <i class="bi bi-tags-fill me-2"></i>Kategori
-                   </a>
                     <a class="menu" href="{{ route('kelola.pengaduan') }}">
                     <i class="bi bi-clipboard-data me-2"></i>Kelola Pengaduan
                 </a>
@@ -60,9 +57,6 @@
                 </a>
             @endif
 
-            <a class="menu" href="{{ route('profil') }}">
-                <i class="bi bi-person-circle me-2"></i>Profile
-            </a>
         </nav>
 
              

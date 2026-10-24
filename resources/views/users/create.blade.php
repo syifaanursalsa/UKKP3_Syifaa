@@ -13,7 +13,7 @@
     <div class="card border-0 shadow-sm" style="max-width: 600px;">
         <div class="card-body">
 
-            {{-- Petugas tidak punya pilihan role --}}
+            
             @if ($role != 'admin')
                 <div class="alert alert-info py-2 small">
                     <i class="bi bi-info-circle me-1"></i>
@@ -54,7 +54,6 @@
                         <label class="form-label">Role</label>
                         <select name="role" class="form-select" required>
                             <option value="admin">Admin</option>
-                            <option value="petugas">Petugas</option>
                             <option value="customer" selected>Customer</option>
                         </select>
                     </div>

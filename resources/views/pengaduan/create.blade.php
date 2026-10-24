@@ -26,26 +26,26 @@
             <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                {{-- 1. KATEGORI (paling atas) --}}
+                {{-- 1. KATEGORI (Langsung ditulis di sini) --}}
                 <div class="mb-3">
                     <label class="form-label">Kategori</label>
-                    <select name="kategori_id" class="form-select" required>
+                    <select name="kategori" class="form-select" required>
                         <option value="">-- Pilih Kategori --</option>
-                        @foreach ($kategoris as $k)
-                            <option value="{{ $k->id }}" @selected(old('kategori_id') == $k->id)>
-                                {{ $k->nama_kategori }}
-                            </option>
-                        @endforeach
+                        <option value="Infrastruktur" @selected(old('kategori') == 'Infrastruktur')>Infrastruktur</option>
+                        <option value="Pelayanan Publik" @selected(old('kategori') == 'Pelayanan Publik')>Pelayanan Publik</option>
+                        <option value="Keamanan" @selected(old('kategori') == 'Keamanan')>Keamanan</option>
+                        <option value="Lingkungan" @selected(old('kategori') == 'Lingkungan')>Lingkungan</option>
+                        <option value="Lainnya" @selected(old('kategori') == 'Lainnya')>Lainnya</option>
                     </select>
                 </div>
 
-                {{-- 2. ISI PENGADUAN / DESKRIPSI --}}
+                {{-- 2. ISI PENGADUAN --}}
                 <div class="mb-3">
                     <label class="form-label">Isi Pengaduan</label>
                     <textarea name="pengaduan" rows="5" class="form-control" placeholder="Tuliskan keluhanmu secara jelas..." required>{{ old('pengaduan') }}</textarea>
                 </div>
 
-                {{-- 3. FOTO BUKTI (paling bawah) --}}
+                {{-- 3. FOTO BUKTI --}}
                 <div class="mb-4">
                     <label class="form-label">Foto Bukti (opsional)</label>
                     <input type="file" name="foto" class="form-control" accept="image/*">

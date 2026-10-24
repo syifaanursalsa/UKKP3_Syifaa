@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     /**
      * Menampilkan daftar semua user.
-     * Diakses oleh admin & petugas (dijaga middleware di route).
+     * Diakses oleh admin &  (dijaga middleware di route).
      */
     public function index()
     {
@@ -30,8 +30,8 @@ class UserController extends Controller
 
     /**
      * Menyimpan user baru.
-     * Admin bebas memilih role, petugas DIPAKSA membuat customer
-     * agar tidak bisa membuat admin/petugas sendiri.
+     * Admin bebas memilih role, DIPAKSA membuat customer
+     * agar tidak bisa membuat admin/ sendiri.
      */
     public function store(Request $request)
     {
@@ -42,14 +42,14 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             // Field role hanya wajib & valid untuk admin
-            'role' => $isAdmin ? 'required|in:admin,petugas,customer' : 'nullable',
+            'role' => $isAdmin ? 'required|in:admin,customer' : 'nullable',
         ]);
 
         User::create([
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // Petugas selalu customer, admin sesuai pilihan
+            // selalu customer, admin sesuai pilihan
             'role' => $isAdmin ? $request->role : 'customer',
         ]);
 
@@ -79,7 +79,7 @@ class UserController extends Controller
             'nama' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6',
-            'role' => 'required|in:admin,petugas,customer',
+            'role' => 'required|in:admin,customer',
         ]);
 
         $data = [

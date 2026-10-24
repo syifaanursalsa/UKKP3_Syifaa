@@ -9,19 +9,29 @@ return new class extends Migration
     /**
      * Membuat tabel pengaduan.
      */
-    public function up(): void
-    {
-        Schema::create('pengaduan', function (Blueprint $table) {
-            $table->id();
-            // Pengaduan milik user mana (jika user dihapus, pengaduannya ikut terhapus)
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('pengaduan');
-            $table->string('foto')->nullable();
-            // Status alur penanganan pengaduan
-            $table->enum('status', ['menunggu', 'diproses', 'selesai'])->default('menunggu');
-            $table->timestamps();
-        });
+      
+    public function store(Request $request)
+{
+    $request->validate([
+        'kategori'  => 'required|string', // Ubah dari kategori_id menjadi string biasa
+        'pengaduan' => 'required|string',
+        'foto'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    $foto = null;
+    if ($request->hasFile('foto')) {
+        $foto = $request->file('foto')->store('pengaduan', 'public');
     }
+
+    auth()->user()->pengaduan()->create([
+        'kategori'  => $request->kategori, // Simpan sebagai teks biasa
+        'pengaduan' => $request->pengaduan,
+        'foto'      => $foto,
+        'status'    => 'menunggu',
+    ]);
+
+    return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dikirim.');
+}  
 
     public function down(): void
     {

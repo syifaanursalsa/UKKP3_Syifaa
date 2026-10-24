@@ -25,14 +25,6 @@
             </div>
         </div>
 
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm border-start border-4 border-warning">
-                <div class="card-body">
-                    <p class="text-muted small mb-1"><i class="bi bi-headset me-1"></i>Petugas</p>
-                    <h4 class="fw-bold mb-0">{{ $totalPetugas }}</h4>
-                </div>
-            </div>
-        </div>
 
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm border-start border-4 border-success">
